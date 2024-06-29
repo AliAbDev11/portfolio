@@ -82,7 +82,7 @@ h1, h2, h3, h4, h5, h6, figure {
 
 ::selection {
   color: #fff;
-  background: #FF9000;
+  background: #198754;
 }
 
 #fh5co-header,
@@ -1079,6 +1079,8 @@ input[type="text"] {
   height: 50px;
   display: table-cell;
   vertical-align: middle;
+  border: 2px solid #198754;
+  border-radius: 50%;
 }
 .gototop a:hover, .gototop a:active, .gototop a:focus {
   text-decoration: none;
@@ -1483,4 +1485,56 @@ footer.unslate_co--footer.unslate_co--section {
   justify-content: center;
 }
 
+.unslate_co--site-nav.scrolled {
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  margin-top: -130px;
+  background: #fff !important;
+  -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.unslate_co--site-nav.scrolled.awake {
+  margin-top: 0px;
+  -webkit-transition: .3s all ease-out;
+  -o-transition: .3s all ease-out;
+  transition: .3s all ease-out;
+}
+
+.unslate_co--site-nav.scrolled.sleep {
+  -webkit-transition: .3s all ease-out;
+  -o-transition: .3s all ease-out;
+  transition: .3s all ease-out;
+}
+
+.unslate_co--site-nav.scrolled.awake a.nav-link.timeline-title {
+  color: black;
+}
+.unslate_co--site-nav.scrolled.awake a.nav-link.timeline-title:hover {
+  border-bottom: 2px black solid;
+}
+
+.video.fh5co-video {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 4em;
+}
+
+.contact-info-label{
+  font-size: 20px;
+}
+
+.contact-info-val{
+  color: #bfbfbf;
+}
+
+.icon-arrow-up22:before {
+  content: "\ebf8";
+}
 /*# sourceMappingURL=style.css.map */
