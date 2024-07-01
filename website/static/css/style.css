@@ -1537,4 +1537,15 @@ footer.unslate_co--footer.unslate_co--section {
 .icon-arrow-up22:before {
   content: "\ebf8";
 }
+
+nav.navbar.bg-body-tertiary.fixed-top {
+  width: 100%;
+}
+
+.container-fluid.cl-dashboard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
 /*# sourceMappingURL=style.css.map */

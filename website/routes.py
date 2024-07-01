@@ -152,3 +152,7 @@ def home():
 @app.route("/login")
 def login():
     return render_template("admin/login.html")
+
+@app.route("/dashboard")
+def dashboard():
+    return render_template("admin/dashboard.html")

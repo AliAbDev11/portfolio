@@ -10,10 +10,11 @@
 body 
 {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   min-height: 100vh;
   background: #000;
+  flex-direction: column;
 }
 section 
 {
