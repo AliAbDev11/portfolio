@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block home_content %}
+{% block content %}
 <div class="d-flex flex-column min-vh-100">
     <!--home section-->
     <div class="fh5co-loader"></div>
@@ -27,6 +27,29 @@
                     <li class="nav-item">
                         <a class="nav-link timeline-title" href="#fh5co-consult">Contact</a>
                     </li>
+                    {% if current_user.is_authenticated %}
+                    <div class="dropdown show">
+                        <button class="btn btn-dark bg-dark dropdown-toggle" type="button" id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            My Account
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li class="nav-item">
+                                <a href="{{ url_for('profile') }}" class="dropdown-item">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url_for('logout') }}" class="dropdown-item">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <li class="nav-item">
+                        <a href="{{ url_for('register') }}" class="nav-link timeline-title"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('login') }}" class="nav-link timeline-title"></a>
+                    </li>
+                    {% endif%}
                 </ul>
             </nav>
             <!-- END nav -->
@@ -540,4 +563,4 @@
     </div>
 </div>
 
-{% endblock home_content %}
+{% endblock content %}

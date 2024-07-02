@@ -12,7 +12,7 @@ from wtforms.validators import (
     ValidationError,
 )
 
-from website.models import User
+from website.models import User, Profile, Contact
 
 class RegistrationForm(FlaskForm):
     fullname = StringField(
@@ -26,11 +26,10 @@ class RegistrationForm(FlaskForm):
         "Password",
         validators=[
             DataRequired(),
-            Regexp(
-                r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_]{8,32}$",
-                message="Password must be 8-32 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&_)"
+            # Regexp(
+            #     message="Password must be 8-32 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&_)"
 
-            ),
+            # ),
         ],
     )
     confirm_password = PasswordField(
@@ -61,8 +60,18 @@ class LoginForm(FlaskForm):
     remember = BooleanField("Remember Me")
     submit = SubmitField("Log In")
 
+class ContactForm(FlaskForm):
+    fullname = StringField('Full Name', validators=[DataRequired(), Length(max=150)])
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(max=150)])
+    subject = StringField('Subject', validators=[DataRequired(), Length(max=200)])
+    message = TextAreaField('Message', validators=[DataRequired(), Length(max=1000)])
+    submit = SubmitField('Send Message')
+
 # Update Profile
 class UpdateProfileForm(FlaskForm):
+    fullname = StringField(
+        "Full Name", validators=[DataRequired(), Length(min=2, max=25)]
+    )
     username = StringField(
         "Username", validators=[DataRequired(), Length(min=2, max=25)]
     )
@@ -78,15 +87,14 @@ class UpdateProfileForm(FlaskForm):
     bio_title = StringField("About Title", validators=[DataRequired(), Length(min=4, max=20)])
     bio = TextAreaField("About Me",validators=[DataRequired()])
     github = StringField("Github", validators=[DataRequired()])
-    # Links
     linkedin = StringField("Linkedin", validators=[DataRequired()])
-    twitter = StringField("Twitter", validators=[DataRequired()])
-    instagram = StringField("Instagram", validators=[DataRequired()])
+    twitter = StringField("Twitter")
+    instagram = StringField("Instagram")
     submit = SubmitField("Update")
 
     def validate_username(self, username):
         if username.data != current_user.username:
-            user = User.query.filter_by(username=username.data).first()
+            user = Profile.query.filter_by(username=username.data).first()
             if user:
                 raise ValidationError(
                     "Username already exists! Please chosse a different one"
@@ -94,8 +102,13 @@ class UpdateProfileForm(FlaskForm):
 
     def validate_email(self, email):
         if email.data != current_user.email:
-            user = User.query.filter_by(email=email.data).first()
+            user = Profile.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError(
                     "Email already exists! Please chosse a different one"
                 )
+    
+    def validate_phone_number(self, phone_number):
+        existing_user = Profile.query.filter_by(phone_number=phone_number.data).first()
+        if existing_user:
+            raise ValidationError('That phone number is already taken. Please choose a different one.')
