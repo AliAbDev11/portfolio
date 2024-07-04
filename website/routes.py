@@ -1,7 +1,7 @@
 import secrets
 from PIL import Image
 import os
-from website.models import User, Contact
+from website.models import User, Profile,Contact
 from flask import render_template, url_for, flash, redirect, request
 from website.forms import RegistrationForm, LoginForm, UpdateProfileForm
 from website import app, bcrypt, db
@@ -217,31 +217,41 @@ def logout():
 def profile():
     profile_form = UpdateProfileForm()
     if profile_form.validate_on_submit():
+        if not current_user.profile:
+            current_user.profile = Profile()  # Create a new profile if none exists
         if profile_form.picture.data:
-            picture_file = save_picture(profile_form.picture.data)
-            current_user.image_file = picture_file
+            picture_file = save_picture(profile_form.picture.data)  # Ensure this function is defined
+            current_user.profile.image_file = picture_file
         current_user.fullname = profile_form.fullname.data
-        current_user.phone_number = profile_form.phone_number.data
+        current_user.profile.phone_number = profile_form.phone_number.data
         current_user.username = profile_form.username.data
         current_user.email = profile_form.email.data
-        current_user.bio_title = profile_form.bio_title.data
-        current_user.bio = profile_form.bio.data
-        current_user.github = profile_form.github.data
-        current_user.linkedin = profile_form.linkedin.data
-        current_user.twitter = profile_form.twitter.data
-        current_user.instagram = profile_form.instagram.data
+        current_user.profile.bio_title = profile_form.bio_title.data
+        current_user.profile.bio = profile_form.bio.data
+        current_user.profile.github = profile_form.github.data
+        current_user.profile.linkedin = profile_form.linkedin.data
+        current_user.profile.twitter = profile_form.twitter.data
+        current_user.profile.instagram = profile_form.instagram.data
         db.session.commit()
         flash("Your profile has been updated", "success")
-        return redirect(url_for("profile"))  # Redirect to the same profile page
+        return redirect(url_for("profile"))
     elif request.method == "GET":
+        profile_form.fullname.data = current_user.fullname
         profile_form.username.data = current_user.username
         profile_form.email.data = current_user.email
-        profile_form.bio.data = current_user.bio
-    image_file = url_for("static", filename=f"images/user_pics/{current_user.image_file}")
+        if current_user.profile:
+            profile_form.phone_number.data = current_user.profile.phone_number
+            profile_form.bio_title.data = current_user.profile.bio_title
+            profile_form.bio.data = current_user.profile.bio
+            profile_form.github.data = current_user.profile.github
+            profile_form.linkedin.data = current_user.profile.linkedin
+            profile_form.twitter.data = current_user.profile.twitter
+            profile_form.instagram.data = current_user.profile.instagram
+    image_file = url_for("static", filename=f"images/user_pics/{current_user.profile.image_file}") if current_user.profile and current_user.profile.image_file else url_for("static", filename="images/user_pics/default.png")
     return render_template(
         "admin/profile.html",
         title="Profile",
         profile_form=profile_form,
         image_file=image_file,
-        active_tab="profile",  # Set active_tab to 'profile' when rendering profile.html
+        active_tab="profile"
     )

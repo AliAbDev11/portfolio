@@ -1087,9 +1087,10 @@ input[type="text"] {
   outline: none;
 }
 
-.btn {
+.dropdown .btn {
+  color: white;
   margin-right: 4px;
-  margin-bottom: 4px;
+  margin-bottom: 0px;
   font-family: "Space Mono", Arial, serif;
   font-size: 16px;
   font-weight: 400;
@@ -1100,7 +1101,7 @@ input[type="text"] {
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s;
-  padding: 8px 20px;
+  padding: 12px 20px;
 }
 .btn.btn-md {
   padding: 8px 20px !important;
@@ -1494,6 +1495,7 @@ footer.unslate_co--footer.unslate_co--section {
   background: #fff !important;
   -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  border-radius: initial;
   padding-top: 5px;
   padding-bottom: 5px;
 }

@@ -11,9 +11,10 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(25), unique=True, nullable=False)
     email = db.Column(db.String(125), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
+    profile = db.relationship('Profile', backref='user', uselist=False)
 
     def __repr__(self):
-        return f"User('{self.fullname}', '{self.username}', '{self.email}')"
+        return f"<User {self.username}>"
 
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -22,16 +23,14 @@ class Profile(db.Model):
     address = db.Column(db.String(255), nullable=True)
     phone_number = db.Column(db.String(15), unique=True, nullable=False)
     bio_title = db.Column(db.String(25), nullable=False)
-    bio = db.Column(db.Text, nullable=True)
-    github = db.Column(db.String(25), nullable=False)
-    linkedin = db.Column(db.String(25), nullable=False)
-    twitter = db.Column(db.String(25), nullable=True)
-    instagram = db.Column(db.String(25), nullable=True)
-
-    user = db.relationship('User', backref=db.backref('profile', uselist=False))
+    bio = db.Column(db.Text, nullable=True, default="")
+    github = db.Column(db.String(100), nullable=False)
+    linkedin = db.Column(db.String(100), nullable=False)
+    twitter = db.Column(db.String(100), nullable=True)
+    instagram = db.Column(db.String(100), nullable=True)
 
     def __repr__(self):
-        return f"Profile('{self.fullname}', '{self.username}', '{self.email}', '{self.image_file}')"
+        return f"<Profile {self.user.username}>"
 
 class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
