@@ -21,14 +21,14 @@ class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.png')
-    address = db.Column(db.String(120))
-    phone_number = db.Column(db.String(15))  # Make it nullable if appropriate
-    bio_title = db.Column(db.String(100))
-    bio = db.Column(db.Text, default='')
-    github = db.Column(db.String(100))
-    linkedin = db.Column(db.String(100))
-    twitter = db.Column(db.String(100))
-    instagram = db.Column(db.String(100))
+    address = db.Column(db.String(255), nullable=True)
+    phone_number = db.Column(db.String(15), unique=True, nullable=False)
+    bio_title = db.Column(db.String(25), nullable=False)
+    bio = db.Column(db.Text, nullable=True, default="")
+    github = db.Column(db.String(100), nullable=False)
+    linkedin = db.Column(db.String(100), nullable=False)
+    twitter = db.Column(db.String(100), nullable=True)
+    instagram = db.Column(db.String(100), nullable=True)
 
     def __repr__(self):
         return f"<Profile {self.user.username}>"
