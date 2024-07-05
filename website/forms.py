@@ -2,7 +2,7 @@ from tokenize import String
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, DateField
 from wtforms.validators import (
     DataRequired,
     Length,
@@ -10,6 +10,7 @@ from wtforms.validators import (
     Regexp,
     EqualTo,
     ValidationError,
+    Optional
 )
 
 from website.models import User, Profile, Contact
@@ -81,9 +82,7 @@ class UpdateProfileForm(FlaskForm):
         Length(min=10, max=15, message='Phone number must be between 10 and 15 characters.'),
         Regexp(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+212 96813151'. Up to 15 digits allowed.")
     ])
-    picture = FileField(
-        "Update Profile Picture", validators=[FileAllowed(["jpg", "png"])]
-    )
+    picture = FileField("Update Profile Picture", validators=[FileAllowed(["jpg", "png"])])
     bio_title = StringField("About Title", validators=[DataRequired(), Length(min=4, max=20)])
     bio = TextAreaField("About Me",validators=[DataRequired()])
     github = StringField("Github", validators=[DataRequired()])
@@ -112,3 +111,19 @@ class UpdateProfileForm(FlaskForm):
         existing_user = Profile.query.filter_by(phone_number=phone_number.data).first()
         if existing_user:
             raise ValidationError('That phone number is already taken. Please choose a different one.')
+
+class ExperienceForm(FlaskForm):
+    job_title = StringField("Job Title", validators=[DataRequired(), Length(min=4, max=50)])
+    company_name = StringField("Company Name", validators=[DataRequired(), Length(min=4, max=50)])
+    start_date = DateField("Start Date", format='%Y-%m-%d', validators=[DataRequired()])
+    still_working = BooleanField("I am currently working here")
+    end_date = DateField("End Date", format='%Y-%m-%d', validators=[Optional()])
+    address = TextAreaField("Address", validators=[DataRequired(), Length(max=1000)])
+    description = TextAreaField("Description", validators=[DataRequired()])
+    submit = SubmitField("Add Experience")
+
+    def validate_end_date(form, field):
+        if not form.still_working.data and field.data is None:
+            raise ValidationError('End Date is required if you are not currently working here.')
+        if field.data and field.data < form.start_date.data:
+            raise ValidationError('End Date must be after Start Date.')

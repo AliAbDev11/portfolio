@@ -1,9 +1,9 @@
 import secrets
 from PIL import Image
 import os
-from website.models import User, Profile, db, Contact
+from website.models import User, Profile, Experience, db, Contact
 from flask import render_template, url_for, flash, redirect, request
-from website.forms import RegistrationForm, LoginForm, UpdateProfileForm
+from website.forms import RegistrationForm, LoginForm, UpdateProfileForm, ExperienceForm
 from website import app, bcrypt
 from sqlalchemy.orm import joinedload
 from flask_login import (
@@ -192,6 +192,11 @@ def register():
         )
         db.session.add(user)
         db.session.commit()
+
+        # Create an empty profile for the new user
+        profile = Profile(user_id=user.id)
+        db.session.add(profile)
+        db.session.commit()
         flash(f"Account created successfully for {form.username.data}", "success")
         return redirect(url_for("login"))
     return render_template("register.html", title="Register", form=form)
@@ -224,50 +229,9 @@ def logout():
 @login_required
 def profile():
     profile_form = UpdateProfileForm()
-
-    #  Load current_user with its profile using joinedload
-    # current_user_with_profile = User.query.options(joinedload(User.profile)).filter_by(id=current_user.id).first()
-
-    if profile_form.validate_on_submit():
-        # Handle form submission and update database
-        if not current_user.profile:
-            current_user.profile = Profile(user_id=current_user.id)
-
-        if profile_form.picture.data:
-            picture_file = save_picture(profile_form.picture.data)
-            current_user.profile.image_file = picture_file
-
-        current_user.fullname = profile_form.fullname.data
-        current_user.profile.phone_number = profile_form.phone_number.data
-        current_user.username = profile_form.username.data
-        current_user.email = profile_form.email.data
-        current_user.profile.bio_title = profile_form.bio_title.data
-        current_user.profile.bio = profile_form.bio.data
-        current_user.profile.github = profile_form.github.data
-        current_user.profile.linkedin = profile_form.linkedin.data
-        current_user.profile.twitter = profile_form.twitter.data
-        current_user.profile.instagram = profile_form.instagram.data
-
-        db.session.commit()
-        flash("Your profile has been updated", "success")
-        return redirect(url_for("profile"))
-
-    elif request.method == "GET":
-        # Populate form fields with data from models
-        profile_form.fullname.data = current_user.fullname
-        profile_form.username.data = current_user.username
-        profile_form.email.data = current_user.email
-
-        if current_user.profile:
-            profile_form.phone_number.data = current_user.profile.phone_number
-            profile_form.bio_title.data = current_user.profile.bio_title
-            profile_form.bio.data = current_user.profile.bio
-            profile_form.github.data = current_user.profile.github
-            profile_form.linkedin.data = current_user.profile.linkedin
-            profile_form.twitter.data = current_user.profile.twitter
-            profile_form.instagram.data = current_user.profile.instagram
-
-    image_file = url_for("static", filename=f"images/user_pics/{current_user.profile.image_file}") if current_user.profile and current_user.profile.image_file else url_for("static", filename="images/user_pics/default.png")
+    
+    # Determine the image file path for rendering
+    image_file = url_for("static", filename=f"images/user_pics/{existing_profile.image_file}") if existing_profile and existing_profile.image_file else url_for("static", filename="images/user_pics/default.png")
 
     return render_template(
         "admin/profile.html",
@@ -276,3 +240,30 @@ def profile():
         image_file=image_file,
         active_tab="profile"
     )
+
+@app.route("/dashboard/experience", methods=["GET", "POST"])
+@login_required
+def add_experience():
+    form = ExperienceForm()
+    if form.validate_on_submit():
+        if form.still_working.data:
+            end_date = None
+        else:
+            end_date = form.end_date.data
+        
+        # Create a new experience instance
+        new_experience = Experience(
+            job_title=form.job_title.data,
+            company_name=form.company_name.data,
+            start_date=form.start_date.data,
+            end_date=end_date,
+            address=form.address.data,
+            description=form.description.data,
+            user_id=current_user.id
+        )
+        db.session.add(new_experience)
+        db.session.commit()
+        flash('Experience has been added', 'success')
+        return redirect(url_for('some_view'))
+    
+    return render_template('add_experience.html', form=form)
