@@ -1,10 +1,11 @@
 import secrets
 from PIL import Image
 import os
-from website.models import User, Profile,Contact
+from website.models import User, Profile, db, Contact
 from flask import render_template, url_for, flash, redirect, request
 from website.forms import RegistrationForm, LoginForm, UpdateProfileForm
-from website import app, bcrypt, db
+from website import app, bcrypt
+from sqlalchemy.orm import joinedload
 from flask_login import (
     login_required,
     login_user,
@@ -162,11 +163,18 @@ def save_picture(form_picture):
     i.save(picture_path)
     return picture_name
 
+# Custom error handler for 404 errors
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+# Home
 @app.route("/")
 @app.route("/home")
 def home():
     return render_template("home.html", profiles=profiles, workexperiences=workexperiences, educations=educations, services=services, skills=skills, portfolios=portfolios, links=links)
 
+# Register
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
@@ -188,7 +196,7 @@ def register():
         return redirect(url_for("login"))
     return render_template("register.html", title="Register", form=form)
 
-
+# LogIn
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -205,7 +213,7 @@ def login():
             flash("Login Unsuccessful. Please check credentials", "danger")
     return render_template("login.html", title="Login", form=form)
 
-
+# LogOut
 @app.route("/logout")
 def logout():
     logout_user()
@@ -216,12 +224,19 @@ def logout():
 @login_required
 def profile():
     profile_form = UpdateProfileForm()
+
+    #  Load current_user with its profile using joinedload
+    # current_user_with_profile = User.query.options(joinedload(User.profile)).filter_by(id=current_user.id).first()
+
     if profile_form.validate_on_submit():
+        # Handle form submission and update database
         if not current_user.profile:
-            current_user.profile = Profile()  # Create a new profile if none exists
+            current_user.profile = Profile(user_id=current_user.id)
+
         if profile_form.picture.data:
-            picture_file = save_picture(profile_form.picture.data)  # Ensure this function is defined
+            picture_file = save_picture(profile_form.picture.data)
             current_user.profile.image_file = picture_file
+
         current_user.fullname = profile_form.fullname.data
         current_user.profile.phone_number = profile_form.phone_number.data
         current_user.username = profile_form.username.data
@@ -232,13 +247,17 @@ def profile():
         current_user.profile.linkedin = profile_form.linkedin.data
         current_user.profile.twitter = profile_form.twitter.data
         current_user.profile.instagram = profile_form.instagram.data
+
         db.session.commit()
         flash("Your profile has been updated", "success")
         return redirect(url_for("profile"))
+
     elif request.method == "GET":
+        # Populate form fields with data from models
         profile_form.fullname.data = current_user.fullname
         profile_form.username.data = current_user.username
         profile_form.email.data = current_user.email
+
         if current_user.profile:
             profile_form.phone_number.data = current_user.profile.phone_number
             profile_form.bio_title.data = current_user.profile.bio_title
@@ -247,7 +266,9 @@ def profile():
             profile_form.linkedin.data = current_user.profile.linkedin
             profile_form.twitter.data = current_user.profile.twitter
             profile_form.instagram.data = current_user.profile.instagram
+
     image_file = url_for("static", filename=f"images/user_pics/{current_user.profile.image_file}") if current_user.profile and current_user.profile.image_file else url_for("static", filename="images/user_pics/default.png")
+
     return render_template(
         "admin/profile.html",
         title="Profile",

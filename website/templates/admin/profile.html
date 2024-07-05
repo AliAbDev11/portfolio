@@ -8,12 +8,12 @@
         {{ profile_form.hidden_tag() }}
         <fieldset class='form-group'>
             <legend class='border-bottom mb-4'>Personal Information</legend>
-            <img class="rounded-circle user-img" src="{{image_file}}" alt="">
+            <img class="rounded-circle user-img" src="{{ image_file }}" alt="Profile Image">
             <div class='form-group'>
                 <div class="row mb-3">
                     <div class="col">
-                        <label for="fullname" class="form-label">Full Name</label>
-                        <input class="form-control" type="text" name="fullname" id="fullname" value="{{ profile_form.fullname.data }}">
+                        {{ profile_form.fullname.label(class="form-label") }}
+                        {{ profile_form.fullname(class="form-control") }}
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -84,7 +84,7 @@
                     {{ profile_form.picture(class='form-control-file') }}
                     {% if profile_form.picture.errors %}
                     {% for error in profile_form.picture.errors %}
-                    <span class="text-danger">{{ error }}</span></br>
+                    <span class="text-danger">{{ error }}</span><br>
                     {% endfor %}
                     {% endif %}
                 </div>
@@ -148,7 +148,7 @@
                 </div>
             </div>
         </fieldset>
-    </form>
+    </form>    
 </div>
 
 {% endblock profile %}
