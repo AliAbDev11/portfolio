@@ -152,6 +152,33 @@ links = [
     },
 ]
 
+# Sample data with unique IDs
+experiences = [
+    {"id": 1, "title": "Web Developer", "company": "ABC Corp", "years": "2017-2020"},
+    {"id": 2, "title": "Project Manager", "company": "XYZ Inc", "years": "2015-2019"},
+    {"id": 3, "title": "Designer", "company": "123 Studio", "years": "2016-2021"},
+]
+
+@app.route('/dashboard/experience',methods=["GET", "POST"])
+def experience():
+    return render_template('admin/Experiences/experience.html', experiences=experiences)
+
+@app.route('/add')
+def add_experience():
+    # Your logic to add an experience
+    return "Add new experience"
+
+@app.route('/edit/<int:experience_id>')
+def edit_experience(experience_id):
+    # Your logic to edit an experience
+    return f"Edit experience with ID {experience_id}"
+
+@app.route('/delete/<int:experience_id>')
+def delete_experience(experience_id):
+    global experiences
+    experiences = [exp for exp in experiences if exp["id"] != experience_id]
+    return redirect(url_for('experience'))
+
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
@@ -192,7 +219,7 @@ def register():
         )
         db.session.add(user)
         db.session.commit()
-        
+
         flash(f"Account created successfully for {form.username.data}", "success")
         return redirect(url_for("login"))
     return render_template("register.html", title="Register", form=form)
@@ -277,30 +304,3 @@ def profile():
         image_file=image_file,
         active_tab="profile"
     )
-
-@app.route("/dashboard/experience", methods=["GET", "POST"])
-@login_required
-def add_experience():
-    form = ExperienceForm()
-    if form.validate_on_submit():
-        if form.still_working.data:
-            end_date = None
-        else:
-            end_date = form.end_date.data
-        
-        # Create a new experience instance
-        new_experience = Experience(
-            job_title=form.job_title.data,
-            company_name=form.company_name.data,
-            start_date=form.start_date.data,
-            end_date=end_date,
-            address=form.address.data,
-            description=form.description.data,
-            user_id=current_user.id
-        )
-        db.session.add(new_experience)
-        db.session.commit()
-        flash('Experience has been added', 'success')
-        return redirect(url_for('some_view'))
-    
-    return render_template('add_experience.html', form=form)
