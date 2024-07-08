@@ -152,21 +152,34 @@ links = [
     },
 ]
 
-# Sample data with unique IDs
-experiences = [
-    {"id": 1, "title": "Web Developer", "company": "ABC Corp", "years": "2017-2020"},
-    {"id": 2, "title": "Project Manager", "company": "XYZ Inc", "years": "2015-2019"},
-    {"id": 3, "title": "Designer", "company": "123 Studio", "years": "2016-2021"},
-]
-
-@app.route('/dashboard/experience',methods=["GET", "POST"])
+@app.route('/dashboard/list_experience')
+@login_required
 def experience():
-    return render_template('admin/Experiences/experience.html', experiences=experiences)
+    user_id = current_user.id
+    experiences = Experience.query.filter_by(user_id=user_id).all()
+    return render_template('admin/Experiences/list_experiences.html', experiences=experiences)
 
-@app.route('/add')
+@app.route('/dashboard/add_experience', methods=["GET", "POST"])
+@login_required
 def add_experience():
-    # Your logic to add an experience
-    return "Add new experience"
+    form = ExperienceForm()
+    if form.validate_on_submit():
+        end_date = None if form.is_current.data else form.end_date.data
+        new_experience = Experience(
+            job_title=form.job_title.data,
+            company_name=form.company_name.data,
+            start_date=form.start_date.data,
+            end_date=end_date,
+            is_current=form.is_current.data,
+            address=form.address.data,
+            description=form.description.data,
+            user_id=current_user.id
+        )
+        db.session.add(new_experience)
+        db.session.commit()
+        flash('Experience added successfully', 'success')
+        return redirect(url_for('experience'))
+    return render_template('admin/Experiences/add_experience.html', form=form)
 
 @app.route('/edit/<int:experience_id>')
 def edit_experience(experience_id):
@@ -175,8 +188,13 @@ def edit_experience(experience_id):
 
 @app.route('/delete/<int:experience_id>')
 def delete_experience(experience_id):
-    global experiences
-    experiences = [exp for exp in experiences if exp["id"] != experience_id]
+    user_id = current_user.id
+    experience_to_delete = Experience.query.filter_by(id=experience_id, user_id=user_id).first()
+
+    if experience_to_delete:
+        db.session.delete(experience_to_delete)
+        db.session.commit()
+
     return redirect(url_for('experience'))
 
 def save_picture(form_picture):
