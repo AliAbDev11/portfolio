@@ -39,13 +39,14 @@ class Experience(db.Model):
     company_name = db.Column(db.String(50), nullable=False)
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=True)
+    is_current = db.Column(db.Boolean, default=False, nullable=False)
     address = db.Column(db.String(1000), nullable=False)
     description = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
-        return f"Experience('{self.job_title}', '{self.company_name}', '{self.start_date}', '{self.end_date}')"
+        return f"Experience('{self.job_title}', '{self.company_name}', '{self.start_date}', '{self.end_date}', '{self.is_current}')"
 
 
 class Contact(db.Model):
