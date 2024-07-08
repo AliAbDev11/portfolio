@@ -113,17 +113,17 @@ class UpdateProfileForm(FlaskForm):
             raise ValidationError('That phone number is already taken. Please choose a different one.')
 
 class ExperienceForm(FlaskForm):
-    job_title = StringField("Job Title", validators=[DataRequired(), Length(min=4, max=50)])
-    company_name = StringField("Company Name", validators=[DataRequired(), Length(min=4, max=50)])
-    start_date = DateField("Start Date", format='%Y-%m-%d', validators=[DataRequired()])
-    still_working = BooleanField("I am currently working here")
-    end_date = DateField("End Date", format='%Y-%m-%d', validators=[Optional()])
-    address = TextAreaField("Address", validators=[DataRequired(), Length(max=1000)])
-    description = TextAreaField("Description", validators=[DataRequired()])
-    submit = SubmitField("Add Experience")
-
+    job_title = StringField('Job Title', validators=[DataRequired()])
+    company_name = StringField('Company Name', validators=[DataRequired()])
+    start_date = DateField('Start Date', format='%Y-%m-%d', validators=[DataRequired()])
+    end_date = DateField('End Date', format='%Y-%m-%d', validators=[Optional()])
+    is_current = BooleanField('Currently Working Here')
+    address = TextAreaField('Address', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+    
     def validate_end_date(form, field):
-        if not form.still_working.data and field.data is None:
+        if not form.is_current.data and field.data is None:
             raise ValidationError('End Date is required if you are not currently working here.')
         if field.data and field.data < form.start_date.data:
             raise ValidationError('End Date must be after Start Date.')
