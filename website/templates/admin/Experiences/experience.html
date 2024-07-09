@@ -35,8 +35,8 @@
                 <a class="nav-link active" href="#skillDropdown" data-bs-toggle="collapse" aria-expanded="false" aria-controls="skillDropdown">Skill</a>
                 <div class="collapse" id="skillDropdown">
                     <ul class="list-unstyled ms-3">
-                        <li class="nav-item"><a class="nav-link active" href="#">List of Skill</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="#">Add Skill</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('skill') }}">List of Skill</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('add_skill') }}">Add Skill</a></li>
                     </ul>
                 </div>
             </li>
@@ -44,8 +44,8 @@
                 <a class="nav-link active" href="#projectDropdown" data-bs-toggle="collapse" aria-expanded="false" aria-controls="projectDropdown">Project</a>
                 <div class="collapse" id="projectDropdown">
                     <ul class="list-unstyled ms-3">
-                        <li class="nav-item"><a class="nav-link active" href="#">List of Project</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="#">Add Project</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('project') }}">List of Project</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('add_project') }}">Add Project</a></li>
                     </ul>
                 </div>
             </li>
