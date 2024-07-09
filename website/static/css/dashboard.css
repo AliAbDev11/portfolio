@@ -5,7 +5,7 @@ body{
     width: 75%;
 }
 .sidebar {
-    height: 85vh;
+    height: 86vh;
     position: fixed;
     top: 85px;
     left: 10px;
@@ -20,7 +20,7 @@ body{
     margin-left: 270px;
     padding: 20px;
 }
-.list-experience, .cl-search, .cl-addexperience, .cl-updatexperience {
+.list-section, .cl-crud{
     background: white;
     box-shadow: 1px 1px 5px gray;
     padding: 20px;
