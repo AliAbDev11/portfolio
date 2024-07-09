@@ -1,0 +1,67 @@
+{% extends "admin/Experiences/experience.html" %}
+{% block content %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert alert-success">
+                {% for category, message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+<!-- Search Form -->
+<div class="cl-crud">
+    <legend class="border-bottom mb-4">Search Project</legend>
+    <form method="GET" action="{{ url_for('project') }}" class="mb-3 mt-4">
+        <div class="row align-items-end">
+            <div class="col-md-5">
+                <label class="form-control-label" >Project Name</label>
+                <input type="text" name="title" class="form-control" placeholder="Search by Name" value="{{ request.args.get('title', '') }}">
+            </div>
+            <div class="col-md-1 d-grid">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- End Search Form -->
+<br>
+<hr>
+<br>
+<div class="list-section">
+    <legend class="border-bottom">List of Project</legend>
+    <p-card class="m-1 mt-1 mb-1">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Project</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if projects %}
+                    {% for project in projects %}
+                    <tr>
+                        <td>{{ project.title }}</td>
+                        <td>{{ project.description }}</td>
+                        <td>
+                            <a href="{{ url_for('update_project', project_id=project.id) }}" class="btn btn-sm btn-primary cl-edit">
+                                <span>Edit</span>
+                            </a>
+                            <a href="{{ url_for('delete_project', project_id=project.id) }}" class="btn btn-sm btn-danger cl-delete" onclick="return confirm('Are you sure you want to delete this item?');">
+                                <span>Delete</span>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">Result not found</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </p-card>
+</div>
+{% endblock content %}
