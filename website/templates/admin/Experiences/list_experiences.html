@@ -1,96 +1,83 @@
 {% extends "admin/Experiences/experience.html" %}
 {% block experience %}
-<h1>Experience Data</h1>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th scope="col">Job Title</th>
-            <th scope="col">Company Name</th>
-            <th scope="col">Start Date</th>
-            <th scope="col">End Date</th>
-            <th scope="col">address</th>
-            <th scope="col">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for experience in experiences %}
-        <tr>
-            <td>{{ experience.job_title }}</td>
-            <td>{{ experience.company_name }}</td>
-            <td>{{ experience.start_date }}</td>
-            <td>
-                {% if experience.is_current %}
-                    Current
-                {% else %}
-                    {{ experience.end_date }}
-                {% endif %}
-            </td>
-            <td>{{ experience.address }}</td>
-            <td>
-                <a href="#" class="btn btn-sm btn-primary cl-edit" data-toggle="modal" data-target="#editModal{{ experience.id }}">
-                    <span>Edit</span>
-                </a>
-                <a href="{{ url_for('delete_experience', experience_id=experience.id) }}" class="btn btn-sm btn-danger cl-delete" onclick="return confirm('Are you sure you want to delete this item?');">
-                    <span>Delete</span>
-                </a>
-            </td>
-        </tr>
-
-        <!-- Edit Modal -->
-        <div class="modal fade" id="editModal{{ experience.id }}" tabindex="-1" role="dialog" aria-labelledby="editModal{{ experience.id }}Label" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editModal{{ experience.id }}Label">Edit Experience</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form id="editForm{{ experience.id }}" action="{{ url_for('update_experience', experience_id=experience.id) }}" method="POST">
-                        <div class="modal-body">
-                            <!-- Add your form fields here -->
-                            <div class="form-group">
-                                <label for="job_title">Job Title</label>
-                                <input type="text" class="form-control" id="job_title" name="job_title" value="{{ experience.job_title }}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="company_name">Company Name</label>
-                                <input type="text" class="form-control" id="company_name" name="company_name" value="{{ experience.company_name }}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="start_date">Start Date</label>
-                                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ experience.start_date}}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="end_date">End Date</label>
-                                <input type="date" class="form-control" id="end_date" name="end_date" value="{% if experience.end_date %}{{ experience.end_date }}{% endif %}">
-                            </div>
-                            <div class="form-group">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="is_current" name="is_current" {% if experience.is_current %}checked{% endif %}>
-                                    <label class="form-check-label" for="is_current">
-                                        Currently Working Here
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Address</label>
-                                <textarea class="form-control" id="address" name="address" rows="3" required>{{ experience.address }}</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="description">Description</label>
-                                <textarea class="form-control" id="description" name="description" rows="5" required>{{ experience.description }}</textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </form>
-                </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert alert-success">
+                {% for category, message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+<!-- Search Form -->
+<div class="cl-search">
+    <h1>Search experience</h1>
+    <form method="GET" action="{{ url_for('experience') }}" class="mb-3 mt-4">
+        <div class="row align-items-end">
+            <div class="col-md-5">
+                <label class="form-control-label" for="job_title">Job Title</label>
+                <input type="text" name="job_title" class="form-control" placeholder="Search by Job Title" value="{{ request.args.get('job_title', '') }}">
+            </div>
+            <div class="col-md-5">
+                <label class="form-control-label" for="company_name">Company Name</label>
+                <input type="text" name="company_name" class="form-control" placeholder="Search by Company Name" value="{{ request.args.get('company_name', '') }}">
+            </div>
+            <div class="col-md-1 d-grid">
+                <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </div>
-        {% endfor %}
-    </tbody>
-</table>
+    </form>
+</div>
+<!-- End Search Form -->
+<br>
+<hr>
+<br>
+<div class="list-experience">
+    <h1>Experience Data</h1>
+    <p-card class="m-1 mt-1 mb-1">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Job Title</th>
+                    <th scope="col">Company Name</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if experiences %}
+                    {% for experience in experiences %}
+                    <tr>
+                        <td>{{ experience.job_title }}</td>
+                        <td>{{ experience.company_name }}</td>
+                        <td>{{ experience.start_date }}</td>
+                        <td>
+                            {% if experience.is_current %}
+                                Current
+                            {% else %}
+                                {{ experience.end_date }}
+                            {% endif %}
+                        </td>
+                        <td>{{ experience.address }}</td>
+                        <td>
+                            <a href="{{ url_for('update_experience', experience_id=experience.id) }}" class="btn btn-sm btn-primary cl-edit">
+                                <span>Edit</span>
+                            </a>
+                            <a href="{{ url_for('delete_experience', experience_id=experience.id) }}" class="btn btn-sm btn-danger cl-delete" onclick="return confirm('Are you sure you want to delete this item?');">
+                                <span>Delete</span>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">Result not found</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </p-card>
+</div>
 {% endblock experience %}
