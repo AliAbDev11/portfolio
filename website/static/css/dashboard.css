@@ -5,15 +5,46 @@ body{
     width: 75%;
 }
 .sidebar {
-    height: 100vh;
+    height: 85vh;
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 85px;
+    left: 10px;
     width: 250px;
-    background-color: #f8f9fa;
+    background-color: white;
     padding-top: 20px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px gray;
 }
 .content {
+    margin-top: 50px;
     margin-left: 270px;
     padding: 20px;
+}
+.list-experience, .cl-search, .cl-addexperience, .cl-updatexperience {
+    background: white;
+    box-shadow: 1px 1px 5px gray;
+    padding: 20px;
+    border-radius: 10px;
+}
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 3px solid gray;
+}
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid gray;
+    background: whitesmoke;
+}
+.table-bordered td, .table-bordered th {
+    border: 2px solid gray;
+}
+.table-bordered {
+    border: 2px solid gray;
+}
+.table {
+    width: 100%;
+    margin-bottom: 0rem;
+    color: #212529;
 }
