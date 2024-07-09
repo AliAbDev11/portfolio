@@ -127,3 +127,36 @@ class ExperienceForm(FlaskForm):
             raise ValidationError('End Date is required if you are not currently working here.')
         if field.data and field.data < form.start_date.data:
             raise ValidationError('End Date must be after Start Date.')
+        
+class EducationForm(FlaskForm):
+    degree = StringField('Degree', validators=[DataRequired()])
+    school = StringField('School Name', validators=[DataRequired()])
+    address = TextAreaField('Address', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    start_date = DateField('Start Date', format='%Y-%m-%d', validators=[DataRequired()])
+    end_date = DateField('End Date', format='%Y-%m-%d', validators=[Optional()])
+    is_current = BooleanField('Currently Studying')
+    submit = SubmitField('Submit')
+    
+    def validate_end_date(form, field):
+        if not form.is_current.data and field.data is None:
+            raise ValidationError('End Date is required if you are not currently working here.')
+        if field.data and field.data < form.start_date.data:
+            raise ValidationError('End Date must be after Start Date.')
+        
+class ServiceForm(FlaskForm):
+    picture = FileField("Update Service Picture", validators=[FileAllowed(["jpg", "png"])])
+    title = StringField('Service Name', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class SkillForm(FlaskForm):
+    title = StringField('Skill Title', validators=[DataRequired()])
+    percent = StringField('Skill percent', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+class ProjectForm(FlaskForm):
+    picture = FileField("Update Project Picture", validators=[FileAllowed(["jpg", "png"])])
+    title = StringField('Company Name', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    link = StringField("Project link", validators=[DataRequired()])
+    submit = SubmitField('Submit')
