@@ -117,7 +117,7 @@ class ExperienceForm(FlaskForm):
     company_name = StringField('Company Name', validators=[DataRequired()])
     start_date = DateField('Start Date', format='%Y-%m-%d', validators=[DataRequired()])
     end_date = DateField('End Date', format='%Y-%m-%d', validators=[Optional()])
-    is_current = BooleanField('Currently Working Here')
+    is_current = BooleanField('Currently Working')
     address = TextAreaField('Address', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     submit = SubmitField('Submit')
