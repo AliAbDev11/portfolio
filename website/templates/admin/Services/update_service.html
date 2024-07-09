@@ -1,0 +1,31 @@
+{% extends "admin/Experiences/experience.html" %}
+{% block content %}
+<div class="container cl-crud">
+    <form method="POST" action="{{ url_for('update_service', service_id=service.id) }}" class="mt-lg-2">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Update Service</legend>
+            <div class="form-group">
+              {{ form.picture.label(class="form-control-label") }}
+              {% if service.image_file %}
+                <div>
+                  <img src="{{ url_for('static', filename='service_pics/' ~ service.image_file) }}" alt="Current Image" style="max-width: 200px;">
+                </div>
+              {% endif %}
+              {{ form.picture(class="form-control-file") }}
+            </div>
+            <div class="form-group">
+              {{ form.title.label(class="form-control-label") }}
+              {{ form.title(class="form-control") }}
+            </div>
+            <div class="form-group">
+              {{ form.description.label(class="form-control-label") }}
+              {{ form.description(class="form-control") }}
+            </div>
+          </fieldset>
+          <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+          </div>
+    </form>
+</div>
+{% endblock content %}
