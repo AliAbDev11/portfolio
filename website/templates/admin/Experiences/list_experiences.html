@@ -1,5 +1,5 @@
 {% extends "admin/Experiences/experience.html" %}
-{% block experience %}
+{% block content %}
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="alert alert-success">
@@ -10,8 +10,8 @@
         {% endif %}
     {% endwith %}
 <!-- Search Form -->
-<div class="cl-search">
-    <h1>Search experience</h1>
+<div class="cl-crud">
+    <legend class="border-bottom mb-4">Search Experience</legend>
     <form method="GET" action="{{ url_for('experience') }}" class="mb-3 mt-4">
         <div class="row align-items-end">
             <div class="col-md-5">
@@ -32,8 +32,8 @@
 <br>
 <hr>
 <br>
-<div class="list-experience">
-    <h1>Experience Data</h1>
+<div class="list-section">
+    <legend class="border-bottom">List of Experience</legend>
     <p-card class="m-1 mt-1 mb-1">
         <table class="table table-bordered">
             <thead>
@@ -80,4 +80,4 @@
         </table>
     </p-card>
 </div>
-{% endblock experience %}
+{% endblock content %}

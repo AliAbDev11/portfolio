@@ -2,11 +2,8 @@
 {% block resume %}
 <div class="cl-resume mt-5">
     <div class="sidebar">
-        <h4 class="text-center">Dashboard</h4>
+        <h4 class="text-center">Sections</h4>
         <ul class="list-unstyled mt-5">
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ url_for('home') }}">Home</a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link active" href="#experienceDropdown" data-bs-toggle="collapse" aria-expanded="false" aria-controls="experienceDropdown">Experience</a>
                 <div class="collapse" id="experienceDropdown">
@@ -20,8 +17,8 @@
                 <a class="nav-link active" href="#educationDropdown" data-bs-toggle="collapse" aria-expanded="false" aria-controls="educationDropdown">Education</a>
                 <div class="collapse" id="educationDropdown">
                     <ul class="list-unstyled ms-3">
-                        <li class="nav-item"><a class="nav-link active" href="#">List of Education</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="#">Add Education</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('education') }}">List of Education</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('add_education') }}">Add Education</a></li>
                     </ul>
                 </div>
             </li>
@@ -29,8 +26,8 @@
                 <a class="nav-link active" href="#serviceDropdown" data-bs-toggle="collapse" aria-expanded="false" aria-controls="serviceDropdown">Service</a>
                 <div class="collapse" id="serviceDropdown">
                     <ul class="list-unstyled ms-3">
-                        <li class="nav-item"><a class="nav-link active" href="#">List of Service</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="#">Add Service</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('service') }}">List of Service</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('add_service') }}">Add Service</a></li>
                     </ul>
                 </div>
             </li>
@@ -55,8 +52,8 @@
         </ul>
     </div>
     <div class="content">
-        {% block experience %}
-        {% endblock experience %}
+        {% block content %}
+        {% endblock content %}
     </div>
 </div>
 {% endblock resume %}
