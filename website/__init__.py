@@ -19,13 +19,13 @@ login_manager.login_message_category = "info"
 from website.route_sections.experience import experience_bp
 from website.route_sections.education import education_bp
 from website.route_sections.service import service_bp
-# from website.route_sections.skill import skill_bp
-# from website.route_sections.project import project_bp
+from website.route_sections.project import project_bp
+from website.route_sections.skill import skill_bp
 
 app.register_blueprint(experience_bp, url_prefix='/experience')
 app.register_blueprint(education_bp, url_prefix='/education')
 app.register_blueprint(service_bp, url_prefix='/service')
-# app.register_blueprint(skill_bp, url_prefix='/skill')
-# app.register_blueprint(project_bp, url_prefix='/project')
+app.register_blueprint(skill_bp, url_prefix='/skill')
+app.register_blueprint(project_bp, url_prefix='/project')
 
 from website import routes
