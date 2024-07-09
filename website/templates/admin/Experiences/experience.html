@@ -1,11 +1,57 @@
 {% extends "admin/dashboard.html"%}
 {% block resume %}
 <div class="cl-resume mt-5">
-    <div class="sidebar mt-5">
-        <h4 class="text-center">Experiences</h4>
-        <ul class="list-unstyled">
-            <li class="nav-item"><a class="nav-link active" href="{{ url_for('experience') }}">List of Experience</a></li>
-            <li class="nav-item"><a class="nav-link active" href="{{ url_for('add_experience') }}">Add Experience</a></li>
+    <div class="sidebar">
+        <h4 class="text-center">Dashboard</h4>
+        <ul class="list-unstyled mt-5">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{ url_for('home') }}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#experienceDropdown" data-bs-toggle="collapse" aria-expanded="false" aria-controls="experienceDropdown">Experience</a>
+                <div class="collapse" id="experienceDropdown">
+                    <ul class="list-unstyled ms-3">
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('experience') }}">List of Experience</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('add_experience') }}">Add Experience</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#educationDropdown" data-bs-toggle="collapse" aria-expanded="false" aria-controls="educationDropdown">Education</a>
+                <div class="collapse" id="educationDropdown">
+                    <ul class="list-unstyled ms-3">
+                        <li class="nav-item"><a class="nav-link active" href="#">List of Education</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">Add Education</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#serviceDropdown" data-bs-toggle="collapse" aria-expanded="false" aria-controls="serviceDropdown">Service</a>
+                <div class="collapse" id="serviceDropdown">
+                    <ul class="list-unstyled ms-3">
+                        <li class="nav-item"><a class="nav-link active" href="#">List of Service</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">Add Service</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#skillDropdown" data-bs-toggle="collapse" aria-expanded="false" aria-controls="skillDropdown">Skill</a>
+                <div class="collapse" id="skillDropdown">
+                    <ul class="list-unstyled ms-3">
+                        <li class="nav-item"><a class="nav-link active" href="#">List of Skill</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">Add Skill</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#projectDropdown" data-bs-toggle="collapse" aria-expanded="false" aria-controls="projectDropdown">Project</a>
+                <div class="collapse" id="projectDropdown">
+                    <ul class="list-unstyled ms-3">
+                        <li class="nav-item"><a class="nav-link active" href="#">List of Project</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">Add Project</a></li>
+                    </ul>
+                </div>
+            </li>
         </ul>
     </div>
     <div class="content">
