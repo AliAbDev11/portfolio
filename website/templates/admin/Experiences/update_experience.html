@@ -1,0 +1,40 @@
+{% extends "admin/Experiences/experience.html" %}
+{% block experience %}
+<div class="container cl-updatexperience">
+    <h2>Update Experience</h2>
+    <form method="POST" action="{{ url_for('update_experience', experience_id=experience.id) }}" class="mt-4">
+        {{ form.hidden_tag() }}
+        <div class="row">
+            <div class="col form-group">
+                {{ form.job_title.label }}
+                {{ form.job_title(class="form-control") }}
+            </div>
+            <div class="col form-group">
+                {{ form.company_name.label }}
+                {{ form.company_name(class="form-control") }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form.start_date.label }}
+            {{ form.start_date(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.end_date.label }}
+            {{ form.end_date(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.is_current }}
+            {{ form.is_current.label }}
+        </div>
+        <div class="form-group">
+            {{ form.address.label }}
+            {{ form.address(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.description.label }}
+            {{ form.description(class="form-control") }}
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+{% endblock experience %}
