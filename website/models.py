@@ -13,6 +13,10 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     profile = db.relationship('Profile', backref='user', uselist=False)
     experiences = db.relationship('Experience', backref='author', lazy=True)
+    educations = db.relationship('Education', backref='author', lazy=True)
+    services = db.relationship('Service', backref='author', lazy=True)
+    skills = db.relationship('Skill', backref='author', lazy=True)
+    projects = db.relationship('Project', backref='author', lazy=True)
 
     def __repr__(self):
         return f"<User {self.username}>"
@@ -47,6 +51,50 @@ class Experience(db.Model):
 
     def __repr__(self):
         return f"Experience('{self.job_title}', '{self.company_name}', '{self.start_date}', '{self.end_date}', '{self.is_current}')"
+class Education(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    degree = db.Column(db.String(50), nullable=False)
+    school = db.Column(db.String(50), nullable=False)
+    start_date = db.Column(db.Date, nullable=False)
+    end_date = db.Column(db.Date, nullable=True)
+    is_current = db.Column(db.Boolean, default=False, nullable=False)
+    address = db.Column(db.String(1000), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"Education('{self.degree}', '{self.school}', '{self.start_date}', '{self.end_date}', '{self.is_current}')"
+class Service(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    image = db.Column(db.String(20), nullable=False, default='default.png')
+    title = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"Service('{self.title}', '{self.description}')"
+class Skill(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(50), nullable=False)
+    percent = db.Column(db.String(50), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"Skill('{self.title}', '{self.percent}')"
+class Project(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    image = db.Column(db.String(20), nullable=False, default='default.png')
+    title = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    link = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"Project('{self.title}', '{self.description}', '{self.link}')"
 
 
 class Contact(db.Model):
