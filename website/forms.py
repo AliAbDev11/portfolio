@@ -154,9 +154,10 @@ class SkillForm(FlaskForm):
     title = StringField('Skill Title', validators=[DataRequired()])
     percent = StringField('Skill percent', validators=[DataRequired()])
     submit = SubmitField('Submit')
+    
 class ProjectForm(FlaskForm):
     picture = FileField("Update Project Picture", validators=[FileAllowed(["jpg", "png"])])
-    title = StringField('Company Name', validators=[DataRequired()])
+    title = StringField('Project Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     link = StringField("Project link", validators=[DataRequired()])
     submit = SubmitField('Submit')
