@@ -56,4 +56,25 @@
         {% endblock content %}
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const isCurrentCheckbox = document.getElementById('is_current');
+        const endDateField = document.querySelector('[name="end_date"]');
+
+        function toggleEndDate() {
+            if (isCurrentCheckbox.checked) {
+                endDateField.disabled = true;
+                endDateField.value = '';  // Clear the value if it's disabled
+            } else {
+                endDateField.disabled = false;
+            }
+        }
+
+        // Initialize the state on page load
+        toggleEndDate();
+
+        // Add event listener to checkbox
+        isCurrentCheckbox.addEventListener('change', toggleEndDate);
+    });
+</script>
 {% endblock resume %}
