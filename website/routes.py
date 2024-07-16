@@ -1,7 +1,7 @@
 import secrets
 from PIL import Image
 import os
-from website.models import User, Profile, db, Contact
+from website.models import User, Profile, db, Education, Experience, Service, Skill, Project, Contact
 from flask import render_template, url_for, flash, redirect, request
 from website.forms import RegistrationForm, LoginForm, UpdateProfileForm
 from website import app, bcrypt
@@ -87,7 +87,7 @@ services = [
     },
 ]
 
-skills = [
+"""skills = [
     {
         "title": "HTML",
         "percent": "92",
@@ -120,7 +120,7 @@ skills = [
         "title": "ReactJs",
         "percent": "80",
     },
-]
+]"""
 
 portfolios = [
     {
@@ -172,7 +172,23 @@ def page_not_found(e):
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template("home.html", profiles=profiles, workexperiences=workexperiences, educations=educations, services=services, skills=skills, portfolios=portfolios, links=links)
+     # Query the education data
+    if current_user.is_authenticated:
+        user_id = current_user.id
+        # profiles = Profile.query.filter_by(user_id=user_id).all()
+        experiences = Experience.query.filter_by(user_id=user_id).all()
+        educations = Education.query.filter_by(user_id=user_id).all()
+        services = Service.query.filter_by(user_id=user_id).all()
+        skills = Skill.query.filter_by(user_id=user_id).all()
+        projects = Skill.query.filter_by(user_id=user_id).all()
+    else:
+        # profiles = []
+        experiences = []
+        educations = []
+        services = []
+        skills = []
+        projects = []
+    return render_template("home.html", profiles=profiles, experiences=experiences, educations=educations, services=services, skills=skills, projects=projects, links=links)
 
 # Register
 @app.route("/register", methods=["GET", "POST"])
