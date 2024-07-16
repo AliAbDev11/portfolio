@@ -117,7 +117,7 @@ class ExperienceForm(FlaskForm):
     company_name = StringField('Company Name', validators=[DataRequired()])
     start_date = DateField('Start Date', format='%Y-%m-%d', validators=[DataRequired()])
     end_date = DateField('End Date', format='%Y-%m-%d', validators=[Optional()])
-    is_current = BooleanField('Currently Working')
+    is_current = BooleanField('Currently Working Here')
     address = TextAreaField('Address', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     submit = SubmitField('Submit')
@@ -135,7 +135,7 @@ class EducationForm(FlaskForm):
     description = TextAreaField('Description', validators=[DataRequired()])
     start_date = DateField('Start Date', format='%Y-%m-%d', validators=[DataRequired()])
     end_date = DateField('End Date', format='%Y-%m-%d', validators=[Optional()])
-    is_current = BooleanField('Currently Studying')
+    is_current = BooleanField('Currently Studying Here')
     submit = SubmitField('Submit')
     
     def validate_end_date(form, field):
