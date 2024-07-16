@@ -44,7 +44,7 @@
                     {% for skill in skills %}
                     <tr>
                         <td>{{ skill.title }}</td>
-                        <td>{{ skill.percent }}</td>
+                        <td>{{ skill.percent }}%</td>
                         <td>
                             <a href="{{ url_for('update_skill', skill_id=skill.id) }}" class="btn btn-sm btn-primary cl-edit">
                                 <span>Edit</span>
