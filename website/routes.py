@@ -133,19 +133,6 @@ def profile():
 
     if profile_form.validate_on_submit():
         # Handle form submission and update database
-        if current_user_obj:
-            profile_form.fullname.data = current_user_obj.fullname
-            profile_form.email.data = current_user_obj.email
-            profile_form.username.data = current_user_obj.username
-
-            if current_user_obj.profile:
-                profile_form.phone_number.data = current_user_obj.profile.phone_number
-                profile_form.bio_title.data = current_user_obj.profile.bio_title
-                profile_form.bio.data = current_user_obj.profile.bio
-                profile_form.github.data = current_user_obj.profile.github
-                profile_form.linkedin.data = current_user_obj.profile.linkedin
-                profile_form.twitter.data = current_user_obj.profile.twitter
-                profile_form.instagram.data = current_user_obj.profile.instagram
         if not current_user_obj.profile:
             # If profile doesn't exist, create a new one
             new_profile = Profile(
