@@ -28,121 +28,6 @@ profiles = [
     }
 ]
 
-workexperiences = [
-    {
-        "title": "Junior Developer",
-        "company_name": "DevTech",
-        "start_date": "2023",
-        "start_end": "Current",
-        "description": "As a Junior Developer at DevTech Technologies since June 2023, I have been involved in developing and maintaining web applications using HTML, CSS, JavaScript, and React. I collaborated with senior developers on API integrations and participated in code reviews and team meetings. Additionally, I implemented responsive design to ensure compatibility across various devices and assisted in troubleshooting and debugging tasks.",
-    },
-    {
-        "title": "Junior Developer",
-        "company_name": "TechDev",
-        "start_date": "2022",
-        "start_end": "2023",
-        "description": "As a Junior Developer at TechDev Technologies since June 2023, I have been involved in developing and maintaining web applications using HTML, CSS, JavaScript, and React. I collaborated with senior developers on API integrations and participated in code reviews and team meetings. Additionally, I implemented responsive design to ensure compatibility across various devices and assisted in troubleshooting and debugging tasks.",
-    },
-]
-
-educations = [
-    {
-        "degree": "Bachelors Degree",
-        "school": "FST",
-        "start_date": "2021",
-        "start_end": "2022",
-        "description": "As a Junior Developer at DevTech Technologies since June 2023, I have been involved in developing and maintaining web applications using HTML, CSS, JavaScript, and React.",
-    },
-    {
-        "degree": "IT DEVELOPMENT DEGREE",
-        "school": "ISTA",
-        "start_date": "2019",
-        "start_end": "2021",
-        "description": "As a Junior Developer at TechDev Technologies since June 2023, I have been involved in developing and maintaining web applications using HTML, CSS, JavaScript, and React.",
-    },
-    {
-        "degree": "HIGH SCHOOL DEGREE",
-        "school": "Makkari",
-        "start_date": "2021",
-        "start_end": "2022",
-        "description": "As a Junior Developer at TechDev Technologies since June 2023, I have been involved in developing and maintaining web applications using HTML, CSS, JavaScript, and React.",
-    },
-]
-
-services = [
-    {
-        "image": "Bachelors Degree",
-        "title": "Web Design",
-        "description": "As a Junior Developer at DevTech Technologies since June 2023, I have been involved in developing and maintaining web applications using HTML, CSS, JavaScript, and React.",
-    },
-    {
-        "image": "IT DEVELOPMENT DEGREE",
-        "title": "Web Developent",
-        "description": "As a Junior Developer at TechDev Technologies since June 2023, I have been involved in developing and maintaining web applications using HTML, CSS, JavaScript, and React.",
-    },
-    {
-        "image": "HIGH SCHOOL DEGREE",
-        "title": "UI/UX Design",
-        "description": "As a Junior Developer at TechDev Technologies since June 2023, I have been involved in developing and maintaining web applications using HTML, CSS, JavaScript, and React.",
-    },
-]
-
-"""skills = [
-    {
-        "title": "HTML",
-        "percent": "92",
-    },
-    {
-        "title": "CSS",
-        "percent": "50",
-    },
-    {
-        "title": "Design",
-        "percent": "95",
-    },
-    {
-        "title": "Python",
-        "percent": "80",
-    },
-    {
-        "title": "JavaScript",
-        "percent": "92",
-    },
-    {
-        "title": "Flask",
-        "percent": "50",
-    },
-    {
-        "title": "Django",
-        "percent": "95",
-    },
-    {
-        "title": "ReactJs",
-        "percent": "80",
-    },
-]"""
-
-portfolios = [
-    {
-        "image": "portfolio-7.jpg",
-        "title": "Note WebApp",
-        "description": "As a Junior Developer at DevTech Technologies since June 2023",
-        "link": "https://github.com/AliAbDev11",
-    },
-    {
-        "image": "portfolio-7.jpg",
-        "title": "Blog Web App",
-        "description": "As a Junior Developer at DevTech Technologies since June 2023",
-        "link": "https://github.com/AliAbDev11",
-    },
-    {
-        "image": "portfolio-7.jpg",
-        "title": "Web Design",
-        "description": "As a Junior Developer at DevTech Technologies since June 2023",
-        "link": "https://github.com/AliAbDev11",
-    },
-]
-
 links = [
     {
         "github": "https://github.com/AliAbDev11",
@@ -180,7 +65,7 @@ def home():
         educations = Education.query.filter_by(user_id=user_id).all()
         services = Service.query.filter_by(user_id=user_id).all()
         skills = Skill.query.filter_by(user_id=user_id).all()
-        projects = Skill.query.filter_by(user_id=user_id).all()
+        projects = Project.query.filter_by(user_id=user_id).all()
     else:
         # profiles = []
         experiences = []
@@ -242,28 +127,47 @@ def logout():
 def profile():
     profile_form = UpdateProfileForm()
 
-    #  Load current_user with its profile using joinedload
-    # current_user = User.query.options(joinedload(User.profile)).filter_by(id=current_user.id).first()
+    # Fetch current_user from Flask-Login
+    user_id = current_user.id
+    current_user_obj = User.query.options(joinedload(User.profile)).filter_by(id=user_id).first()
 
     if profile_form.validate_on_submit():
         # Handle form submission and update database
-        if not current_user.profile:
-            current_user.profile = Profile(user_id=current_user.id)
+        if current_user_obj:
+            profile_form.fullname.data = current_user_obj.fullname
+            profile_form.email.data = current_user_obj.email
+            profile_form.username.data = current_user_obj.username
 
-        if profile_form.picture.data:
-            picture_file = save_picture(profile_form.picture.data)
-            current_user.profile.image_file = picture_file
-
-        current_user.fullname = profile_form.fullname.data
-        current_user.profile.phone_number = profile_form.phone_number.data
-        current_user.username = profile_form.username.data
-        current_user.email = profile_form.email.data
-        current_user.profile.bio_title = profile_form.bio_title.data
-        current_user.profile.bio = profile_form.bio.data
-        current_user.profile.github = profile_form.github.data
-        current_user.profile.linkedin = profile_form.linkedin.data
-        current_user.profile.twitter = profile_form.twitter.data
-        current_user.profile.instagram = profile_form.instagram.data
+            if current_user_obj.profile:
+                profile_form.phone_number.data = current_user_obj.profile.phone_number
+                profile_form.bio_title.data = current_user_obj.profile.bio_title
+                profile_form.bio.data = current_user_obj.profile.bio
+                profile_form.github.data = current_user_obj.profile.github
+                profile_form.linkedin.data = current_user_obj.profile.linkedin
+                profile_form.twitter.data = current_user_obj.profile.twitter
+                profile_form.instagram.data = current_user_obj.profile.instagram
+        if not current_user_obj.profile:
+            # If profile doesn't exist, create a new one
+            new_profile = Profile(
+                user_id=user_id,
+                phone_number=profile_form.phone_number.data,
+                bio_title=profile_form.bio_title.data,
+                bio=profile_form.bio.data,
+                github=profile_form.github.data,
+                linkedin=profile_form.linkedin.data,
+                twitter=profile_form.twitter.data,
+                instagram=profile_form.instagram.data
+            )
+            db.session.add(new_profile)
+        else:
+            # If profile exists, update it
+            current_user_obj.profile.phone_number = profile_form.phone_number.data
+            current_user_obj.profile.bio_title = profile_form.bio_title.data
+            current_user_obj.profile.bio = profile_form.bio.data
+            current_user_obj.profile.github = profile_form.github.data
+            current_user_obj.profile.linkedin = profile_form.linkedin.data
+            current_user_obj.profile.twitter = profile_form.twitter.data
+            current_user_obj.profile.instagram = profile_form.instagram.data
 
         db.session.commit()
         flash("Your profile has been updated", "success")
@@ -271,20 +175,22 @@ def profile():
 
     elif request.method == "GET":
         # Populate form fields with data from models
-        profile_form.fullname.data = current_user.fullname
-        profile_form.username.data = current_user.username
-        profile_form.email.data = current_user.email
+        if current_user_obj:
+            profile_form.fullname.data = current_user_obj.fullname
+            profile_form.email.data = current_user_obj.email
+            profile_form.username.data = current_user_obj.username
 
-        if current_user.profile:
-            profile_form.phone_number.data = current_user.profile.phone_number
-            profile_form.bio_title.data = current_user.profile.bio_title
-            profile_form.bio.data = current_user.profile.bio
-            profile_form.github.data = current_user.profile.github
-            profile_form.linkedin.data = current_user.profile.linkedin
-            profile_form.twitter.data = current_user.profile.twitter
-            profile_form.instagram.data = current_user.profile.instagram
+            if current_user_obj.profile:
+                profile_form.phone_number.data = current_user_obj.profile.phone_number
+                profile_form.bio_title.data = current_user_obj.profile.bio_title
+                profile_form.bio.data = current_user_obj.profile.bio
+                profile_form.github.data = current_user_obj.profile.github
+                profile_form.linkedin.data = current_user_obj.profile.linkedin
+                profile_form.twitter.data = current_user_obj.profile.twitter
+                profile_form.instagram.data = current_user_obj.profile.instagram
+
     # Determine the image file path for rendering
-    image_file = url_for("static", filename=f"images/user_pics/{current_user.profile.image_file}") if current_user.profile and current_user.profile.image_file else url_for("static", filename="images/user_pics/default.png")
+    image_file = url_for("static", filename=f"images/user_pics/{current_user_obj.profile.image_file}") if current_user_obj.profile and current_user_obj.profile.image_file else url_for("static", filename="images/user_pics/default.png")
 
     return render_template(
         "admin/profile.html",
