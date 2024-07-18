@@ -1,35 +1,35 @@
 {% extends "admin/Experiences/experience.html" %}
 {% block content %}
 <div class="container cl-crud">
-    <form method="POST" action="{{ url_for('update_project', project_id=project.id) }}" class="mt-lg-2">
+    <form method="POST" action="{{ url_for('update_project', project_id=project.id) }}" enctype="multipart/form-data" class="mt-lg-2">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Update Project</legend>
-            <div class="form-group">
-              {{ form.picture.label(class="form-control-label") }}
-              {% if project.image_file %}
-                <div>
-                  <img src="{{ url_for('static', filename='project_pics/' ~ project.image_file) }}" alt="Current Image" style="max-width: 200px;">
-                </div>
+            <div class="form-group d-grid">
+              {% if project.picture %}
+                <img class="mb-3" src="{{ url_for('static', filename='images/' + project.picture) }}" alt="Project Image" width="400">
+              {% else %}
+                  <img class="mb-3" src="{{ url_for('static', filename='images/default_img.png') }}" alt="Default Image" width="400">
               {% endif %}
-              {{ form.picture(class="form-control-file") }}
+                {{ form.picture.label(class="form-control-label") }}
+                {{ form.picture(class="form-control-file") }}
             </div>
             <div class="form-group">
-              {{ form.title.label(class="form-control-label") }}
-              {{ form.title(class="form-control") }}
+                {{ form.title.label(class="form-control-label") }}
+                {{ form.title(class="form-control") }}
             </div>
             <div class="form-group">
-              {{ form.description.label(class="form-control-label") }}
-              {{ form.description(class="form-control") }}
+                {{ form.description.label(class="form-control-label") }}
+                {{ form.description(class="form-control") }}
             </div>
             <div class="form-group">
-              {{ form.link.label(class="form-control-label") }}
-              {{ form.link(class="form-control") }}
+                {{ form.link.label(class="form-control-label") }}
+                {{ form.link(class="form-control") }}
             </div>
-          </fieldset>
-          <div class="form-group">
+        </fieldset>
+        <div class="form-group">
             {{ form.submit(class="btn btn-outline-info") }}
-          </div>
+        </div>
     </form>
 </div>
-{% endblock content %}
+{% endblock %}
