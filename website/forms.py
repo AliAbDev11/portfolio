@@ -84,7 +84,7 @@ class UpdateProfileForm(FlaskForm):
     ])
     picture = FileField("Update Profile Picture", validators=[FileAllowed(["jpg", "png"])])
     bio_title = StringField("About Title", validators=[DataRequired(), Length(min=4, max=20)])
-    bio = TextAreaField("About Me",validators=[DataRequired()])
+    bio = TextAreaField("About Me", validators=[DataRequired()])
     github = StringField("Github", validators=[DataRequired()])
     linkedin = StringField("Linkedin", validators=[DataRequired()])
     twitter = StringField("Twitter")
@@ -93,10 +93,10 @@ class UpdateProfileForm(FlaskForm):
 
     def validate_username(self, username):
         if username.data != current_user.username:
-            user = Profile.query.filter_by(username=username.data).first()
+            user = User.query.filter_by(username=username.data).first()
             if user:
                 raise ValidationError(
-                    "Username already exists! Please chosse a different one"
+                    "Username already exists! Please choose a different one"
                 )
 
     def validate_email(self, email):
