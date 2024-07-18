@@ -86,7 +86,7 @@ class Skill(db.Model):
         return f"Skill('{self.title}', '{self.percent}')"
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    image = db.Column(db.String(20), nullable=False, default='default.png')
+    picture = db.Column(db.String(20))  # Adjust size and type as necessary
     title = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text, nullable=False)
     link = db.Column(db.String(100), nullable=False)
