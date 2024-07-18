@@ -156,7 +156,7 @@ class SkillForm(FlaskForm):
     submit = SubmitField('Submit')
     
 class ProjectForm(FlaskForm):
-    picture = FileField("Update Project Picture", validators=[FileAllowed(["jpg", "png"])])
+    picture = FileField("Update Project Picture", validators=[FileAllowed(["jpg", "png"]), DataRequired()])
     title = StringField('Project Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     link = StringField("Project link", validators=[DataRequired()])
