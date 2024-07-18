@@ -34,6 +34,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th scope="col">Project Picture</th>
                     <th scope="col">Project</th>
                     <th scope="col">Description</th>
                     <th scope="col">Action</th>
@@ -43,6 +44,13 @@
                 {% if projects %}
                     {% for project in projects %}
                     <tr>
+                        <td class="col-2">
+                            {% if project.picture %}
+                                <img src="{{ url_for('static', filename='images/' + project.picture) }}" alt="Project Image" width="100">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='images/default_img.png') }}" alt="Default Image" width="100">
+                            {% endif %}
+                        </td>
                         <td>{{ project.title }}</td>
                         <td>{{ project.description }}</td>
                         <td>
