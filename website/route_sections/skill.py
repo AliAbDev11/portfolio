@@ -57,7 +57,7 @@ def update_skill(skill_id):
         form.percent.data = skill.percent
     return render_template('admin/Skills/update_skill.html', form=form, skill=skill)
 
-@app.route('/delete/<int:skill_id>')
+@app.route('/delete/delete_skill/<int:skill_id>')
 def delete_skill(skill_id):
     user_id = current_user.id
     skill_to_delete = Skill.query.filter_by(id=skill_id, user_id=user_id).first()
@@ -65,5 +65,8 @@ def delete_skill(skill_id):
     if skill_to_delete:
         db.session.delete(skill_to_delete)
         db.session.commit()
+        flash('Skill deleted successfully', 'success')
+    else:
+        flash('Skill not found or you do not have permission to delete this skill.', 'danger')
 
     return redirect(url_for('skill'))
