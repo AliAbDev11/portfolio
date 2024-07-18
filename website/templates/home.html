@@ -300,7 +300,7 @@
                 </div>
             </div>
         </div>
-        <!--portfolio section-->
+        <!-- Portfolio section -->
         <div id="fh5co-work" class="fh5co-bg-dark section">
             <div class="container">
                 <div class="row animate-box">
@@ -309,70 +309,16 @@
                     </div>
                 </div>
                 <div class="row">
+                    {% for project in projects %}
                     <div class="col-md-3 text-center col-padding animate-box">
-                        <a href="#" class="work" style="background-image: url('{{ url_for('static', filename='images/portfolio-1.jpg') }}');">
+                        <a href="{{ project.link }}" target="_blank" class="work" style="background-image: url('{{ url_for('static', filename='images/' + (project.picture if project.picture else 'default_img.png')) }}');">
                             <div class="desc">
-                                <h3>Project Name</h3>
-                                <span>Illustration</span>
+                                <h3>{{ project.title }}</h3>
+                                <span>View Project</span>
                             </div>
                         </a>
                     </div>
-                    <div class="col-md-3 text-center col-padding animate-box">
-                        <a href="#" class="work" style="background-image: url('{{ url_for('static', filename='images/portfolio-2.jpg') }}');">
-                            <div class="desc">
-                                <h3>Project Name</h3>
-                                <span>Brading</span>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-3 text-center col-padding animate-box">
-                        <a href="#" class="work" style="background-image: url('{{ url_for('static', filename='images/portfolio-3.jpg') }}');">
-                            <div class="desc">
-                                <h3>Project Name</h3>
-                                <span>Illustration</span>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-3 text-center col-padding animate-box">
-                        <a href="#" class="work" style="background-image: url('{{ url_for('static', filename='images/portfolio-4.jpg') }}');">
-                            <div class="desc">
-                                <h3>Project Name</h3>
-                                <span>Design</span>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-3 text-center col-padding animate-box">
-                        <a href="#" class="work" style="background-image: url('{{ url_for('static', filename='images/portfolio-5.jpg') }}');">
-                            <div class="desc">
-                                <h3>Project Name</h3>
-                                <span>Website</span>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-3 text-center col-padding animate-box">
-                        <a href="#" class="work" style="background-image: url('{{ url_for('static', filename='images/portfolio-6.jpg') }}');">
-                            <div class="desc">
-                                <h3>Project Name</h3>
-                                <span>Illustration</span>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-3 text-center col-padding animate-box">
-                        <a href="#" class="work" style="background-image: url('{{ url_for('static', filename='images/portfolio-7.jpg') }}');">
-                            <div class="desc">
-                                <h3>Project Name</h3>
-                                <span>Brading</span>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-3 text-center col-padding animate-box">
-                        <a href="#" class="work" style="background-image: url('{{ url_for('static', filename='images/portfolio-8.jpg') }}');">
-                            <div class="desc">
-                                <h3>Project Name</h3>
-                                <span>Illustration</span>
-                            </div>
-                        </a>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
