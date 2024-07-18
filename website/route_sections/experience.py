@@ -73,7 +73,7 @@ def update_experience(experience_id):
         form.description.data = experience.description
     return render_template('admin/Experiences/update_experience.html', form=form, experience=experience)
 
-@app.route('/delete/<int:experience_id>')
+@app.route('/delete/delete_experience/<int:experience_id>')
 def delete_experience(experience_id):
     user_id = current_user.id
     experience_to_delete = Experience.query.filter_by(id=experience_id, user_id=user_id).first()
@@ -81,5 +81,8 @@ def delete_experience(experience_id):
     if experience_to_delete:
         db.session.delete(experience_to_delete)
         db.session.commit()
+        flash('Experience deleted successfully', 'success')
+    else:
+        flash('Experience not found or you do not have permission to delete this experience.', 'danger')
 
     return redirect(url_for('experience'))
