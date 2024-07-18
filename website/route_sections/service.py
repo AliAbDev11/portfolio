@@ -67,7 +67,7 @@ def update_service(service_id):
         form.description.data = service.description
     return render_template('admin/Services/update_service.html', form=form, service=service)
 
-@app.route('/delete/<int:service_id>')
+@app.route('/delete/delete_service/<int:service_id>')
 def delete_service(service_id):
     user_id = current_user.id
     service_to_delete = Service.query.filter_by(id=service_id, user_id=user_id).first()
@@ -75,5 +75,8 @@ def delete_service(service_id):
     if service_to_delete:
         db.session.delete(service_to_delete)
         db.session.commit()
+        flash('Service deleted successfully', 'success')
+    else:
+        flash('Service not found or you do not have permission to delete this service.', 'danger')
 
     return redirect(url_for('service'))
