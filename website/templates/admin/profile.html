@@ -1,6 +1,5 @@
-{% extends "admin/dashboard.html"%}
+{% extends "admin/dashboard.html" %}
 {% block profile %}
-
 <!-- Profile -->
 <div class="{{'container tab-pane show active fade p-3 my-5' if active_tab=='profile' else 'tab-pane fade my-5 p-3'}}" id="nav-profile"
     role="tabpanel" aria-labelledby="nav-profile-tab">
@@ -95,7 +94,6 @@
                     {% endif %}
                 </div>
                 <div class="row">
-
                     <div class="col">
                         {{ profile_form.github.label(class='form-control-label') }}
                         {% if profile_form.github.errors %}
@@ -157,4 +155,4 @@
     </form>    
 </div>
 
-{% endblock profile %}
+{% endblock profile %}  
