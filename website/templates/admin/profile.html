@@ -1,9 +1,19 @@
 {% extends "admin/dashboard.html" %}
 {% block profile %}
+
 <!-- Profile -->
 <div class="{{'container tab-pane show active fade p-3 my-5' if active_tab=='profile' else 'tab-pane fade my-5 p-3'}}" id="nav-profile"
     role="tabpanel" aria-labelledby="nav-profile-tab">
-    <form action="" method="POST" enctype="multipart/form-data">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert alert-success">
+                {% for category, message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <form action="{{ url_for('profile') }}" method="POST" enctype="multipart/form-data">
         {{ profile_form.hidden_tag() }}
         <fieldset class='form-group'>
             <legend class='border-bottom mb-4'>Personal Information</legend>
@@ -11,6 +21,15 @@
                 <div class="row mb-3">
                     <div class="col-md-2 cl-img text-center">
                         <img class="rounded-circle user-img img-width" src="{{ image_file }}" alt="Profile Image">
+                        <div class="form-group my-3">
+                            {{ profile_form.picture.label }}
+                            {{ profile_form.picture(class='form-control-file') }}
+                            {% if profile_form.picture.errors %}
+                            {% for error in profile_form.picture.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
                     </div>
                     <div class="col-md-10 cl-persoinfo">
                         <div class="row mb-3">
@@ -59,6 +78,10 @@
                                 {{ profile_form.email(class='form-control form-control') }}
                                 {% endif %}
                             </div>
+                            <div class="mt-3">
+                                {{ profile_form.address.label(class='form-control-label') }}
+                                {{ profile_form.address(class='form-control') }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -82,16 +105,7 @@
                 </div>
                 <div class="my-3">
                     {{ profile_form.bio.label(class='form-control-label') }}
-                    {{ profile_form.bio(class='form-control') }}
-                </div>
-                <div class="form-group mb-3">
-                    {{ profile_form.picture.label }}
-                    {{ profile_form.picture(class='form-control-file') }}
-                    {% if profile_form.picture.errors %}
-                    {% for error in profile_form.picture.errors %}
-                    <span class="text-danger">{{ error }}</span><br>
-                    {% endfor %}
-                    {% endif %}
+                    {{ profile_form.bio(class='form-control', rows=5) }}
                 </div>
                 <div class="row">
                     <div class="col">
@@ -152,7 +166,6 @@
                 </div>
             </div>
         </fieldset>
-    </form>    
+    </form>
 </div>
-
-{% endblock profile %}  
+{% endblock profile %}
