@@ -73,7 +73,7 @@ def update_education(education_id):
         form.description.data = education.description
     return render_template('admin/Educations/update_education.html', form=form, education=education)
 
-@app.route('/delete/<int:education_id>')
+@app.route('/delete/delete_education/<int:education_id>')
 def delete_education(education_id):
     user_id = current_user.id
     education_to_delete = Education.query.filter_by(id=education_id, user_id=user_id).first()
@@ -81,5 +81,8 @@ def delete_education(education_id):
     if education_to_delete:
         db.session.delete(education_to_delete)
         db.session.commit()
+        flash('Education deleted successfully', 'success')
+    else:
+        flash('Education not found or you do not have permission to delete this education.', 'danger')
 
     return redirect(url_for('education'))
