@@ -71,14 +71,14 @@ def home():
      # Query the education data
     if current_user.is_authenticated:
         user_id = current_user.id
-        # profiles = Profile.query.filter_by(user_id=user_id).all()
+        profiles = Profile.query.filter_by(user_id=current_user.id).all()
         experiences = Experience.query.filter_by(user_id=user_id).all()
         educations = Education.query.filter_by(user_id=user_id).all()
         services = Service.query.filter_by(user_id=user_id).all()
         skills = Skill.query.filter_by(user_id=user_id).all()
         projects = Project.query.filter_by(user_id=user_id).all()
     else:
-        # profiles = []
+        profiles = []
         experiences = []
         educations = []
         services = []
