@@ -17,29 +17,6 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-
-profiles = [
-    {
-        "fullname": "Ali Ait Brahim",
-        "phone": "+212 696813151",
-        "jobs": "Web Developer / Web desiner",
-        "email": "aliaitbrahim@gmail.com",
-        "address": "RES FERDAOUS, OULFA, CASABLANCA, MOROCCO",
-        "image": "LogoAB.png",
-        "about_title": "Hello there!",
-        "about_description": "Skilled Web Developer with over 1 year of experience in creating websites and web applications. Proficient in front-end and back-end programming languages, as well as modern frameworks and tools. Passionate about web development and constantly keeping up with the latest technological trends. Demonstrated experience in designing, developing, testing, and deploying high-performance and user-friendly websites. Ability to work in a team, solve problems effectively, and meet deadlines. Additionally, I am a talented Web Designer and UI/UX Designer, combining technical proficiency with a keen eye for design to create visually appealing and user-centric digital experiences.",
-    }
-]
-
-links = [
-    {
-        "github": "https://github.com/AliAbDev11",
-        "linkedin": "https://www.linkedin.com/in/ali-ait-brahim-51653b201/",
-        "instagram": "https://www.instagram.com/ali_ab_harry/",
-        "twitter": "https://x.com/AliAitBrahim11",
-    },
-]
-
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
@@ -84,7 +61,7 @@ def home():
         services = []
         skills = []
         projects = []
-    return render_template("home.html", profiles=profiles, experiences=experiences, educations=educations, services=services, skills=skills, projects=projects, links=links)
+    return render_template("home.html", profiles=profiles, experiences=experiences, educations=educations, services=services, skills=skills, projects=projects )
 
 # Register
 @app.route("/register", methods=["GET", "POST"])
