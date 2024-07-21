@@ -45,22 +45,13 @@ def page_not_found(e):
 @app.route("/")
 @app.route("/home")
 def home():
-     # Query the education data
-    if current_user.is_authenticated:
-        user_id = current_user.id
-        profiles = Profile.query.filter_by(user_id=current_user.id).all()
-        experiences = Experience.query.filter_by(user_id=user_id).all()
-        educations = Education.query.filter_by(user_id=user_id).all()
-        services = Service.query.filter_by(user_id=user_id).all()
-        skills = Skill.query.filter_by(user_id=user_id).all()
-        projects = Project.query.filter_by(user_id=user_id).all()
-    else:
-        profiles = []
-        experiences = []
-        educations = []
-        services = []
-        skills = []
-        projects = []
+     # Queryx data
+    profiles = Profile.query.all()
+    experiences = Experience.query.all()
+    educations = Education.query.all()
+    services = Service.query.all()
+    skills = Skill.query.all()
+    projects = Project.query.all()
     return render_template("home.html", profiles=profiles, experiences=experiences, educations=educations, services=services, skills=skills, projects=projects )
 
 # Register
