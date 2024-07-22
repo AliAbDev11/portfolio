@@ -84,12 +84,11 @@
        </fieldset>
    </form>
    <small class="text-muted ml-2">
-       <a href="#">Forgeot Password?
+       <a href="{{ url_for('reset_request') }}">Forgeot Password?
        </a>
    </small>
    <small class="text-muted">
-       Need An Account?
-       <a class="ml-2" href="{{url_for('register')}}"> Sign Up Here</a>
+       <a class="ml-2" href="{{url_for('register')}}">Need An Account? Sign Up Here</a>
    </small>
 </div>
 {% endblock content %}
