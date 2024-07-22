@@ -217,17 +217,32 @@ def reset_password(token):
         return redirect(url_for("login"))
     return render_template("reset_password.html", title="Reset Password", form=form)
 
-@app.route("/delete_account", methods=["POST"])
-@login_required
-def delete_account():
-    user_id = current_user.id
-    user = User.query.get(user_id)
-    profile = Profile.query.filter_by(user_id=user_id).first()
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'POST':
+        fullname = request.form.get('fullname')
+        email = request.form.get('email')
+        subject = request.form.get('subject')
+        message = request.form.get('message')
 
-    if profile:
-        db.session.delete(profile)
+        # Render HTML template
+        html_content = render_template('contact_email.html', fullname=fullname, email=email, subject=subject, message=message)
+        
+        # Create the email message
+        msg = Message(
+            subject=f"Message from {fullname} - {subject}",
+            sender=email,  # This is the sender's email address provided by the user
+            recipients=['aliabdev07@gmail.com']  # Your email address
+        )
+        msg.html = html_content
 
-    db.session.delete(user)
-    db.session.commit()
-    flash("Your account has been deleted.", "success")
-    return redirect(url_for("home"))
+        # Send the email
+        try:
+            mail.send(msg)
+            flash('Your message has been sent successfully!', 'success')
+        except Exception as e:
+            flash(f'An error occurred: {e}', 'error')
+
+        return redirect(url_for('contact'))
+
+    return render_template('home.html')
