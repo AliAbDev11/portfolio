@@ -100,12 +100,9 @@ class UpdateProfileForm(FlaskForm):
                 )
 
     def validate_email(self, email):
-        if email.data != current_user.email:
-            user = Profile.query.filter_by(email=email.data).first()
-            if user:
-                raise ValidationError(
-                    "Email already exists! Please chosse a different one"
-                )
+        user = User.query.filter_by(email=email.data).first()
+        if user and user.id != current_user.id:
+            raise ValidationError('That email is already taken. Please choose a different one.')
     
     def validate_phone_number(self, phone_number):
         if phone_number.data != current_user.profile.phone_number:
@@ -162,3 +159,19 @@ class ProjectForm(FlaskForm):
     description = TextAreaField('Description', validators=[DataRequired()])
     link = StringField("Project link", validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField(
+        "Password",
+        validators=[
+            DataRequired(),
+        ],
+    )
+    confirm_password = PasswordField(
+        "Confirm Password", validators=[DataRequired(), EqualTo("password")]
+    )
+    submit = SubmitField("Reset Password")
