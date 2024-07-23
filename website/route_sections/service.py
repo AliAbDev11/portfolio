@@ -58,7 +58,7 @@ def add_service():
         db.session.add(service)
         db.session.commit()
         flash('Service added successfully', 'success')
-        return redirect(url_for('service'))  # Make sure you have this route
+        return redirect(url_for('service'))
     return render_template('admin/Services/add_service.html', form=form)
 
 @app.route('/dashboard/update_service/<int:service_id>', methods=['GET', 'POST'])
@@ -74,7 +74,7 @@ def update_service(service_id):
             service.picture = picture_file
         db.session.commit()
         flash('Your service has been updated!', 'success')
-        return redirect(url_for('service'))  # Redirect to the service list page
+        return redirect(url_for('service'))
     elif request.method == 'GET':
         form.title.data = service.title
         form.description.data = service.description
