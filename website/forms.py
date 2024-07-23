@@ -143,7 +143,7 @@ class EducationForm(FlaskForm):
             raise ValidationError('End Date must be after Start Date.')
         
 class ServiceForm(FlaskForm):
-    picture = FileField("Update Service Picture", validators=[FileAllowed(["jpg", "png"])])
+    picture = FileField("Update Service Picture", validators=[FileAllowed(["jpg", "png"]), DataRequired()])
     title = StringField('Service Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     submit = SubmitField('Submit')
