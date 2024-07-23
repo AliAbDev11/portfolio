@@ -1,31 +1,32 @@
 {% extends "admin/Experiences/experience.html" %}
 {% block content %}
 <div class="container cl-crud">
-    <form method="POST" action="{{ url_for('update_service', service_id=service.id) }}" class="mt-lg-2">
+    <form method="POST" action="{{ url_for('update_service', service_id=service.id) }}" enctype="multipart/form-data" class="mt-lg-2">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Update Service</legend>
             <div class="form-group d-grid">
               {% if service.picture %}
-                <img class="mb-3" src="{{ url_for('static', filename='images/' + service.picture) }}" alt="Sevice Image" width="200">
+                <img class="mb-3" src="{{ url_for('static', filename='images/' + service.picture) }}" alt="service Image" width="200">
               {% else %}
                   <img class="mb-3" src="{{ url_for('static', filename='images/default_img.png') }}" alt="Default Image" width="200">
               {% endif %}
-              {{ form.picture.label(class="form-control-label") }}
-              {{ form.picture(class="form-control-file") }}
+                {{ form.picture.label(class="form-control-label") }}
+                {{ form.picture(class="form-control-file") }}
             </div>
             <div class="form-group">
-              {{ form.title.label(class="form-control-label") }}
-              {{ form.title(class="form-control") }}
+                {{ form.title.label(class="form-control-label") }}
+                {{ form.title(class="form-control") }}
             </div>
             <div class="form-group">
-              {{ form.description.label(class="form-control-label") }}
-              {{ form.description(class="form-control") }}
+                {{ form.description.label(class="form-control-label") }}
+                {{ form.description(class="form-control") }}
             </div>
-          </fieldset>
-          <div class="form-group">
-            {{ form.submit(class="btn btn-outline-info") }}
-          </div>
+        </fieldset>
+        <div class="form-group d-flex justify-content-end">
+            <button type="button" class="btn btn-secondary mr-3" onclick="history.back()">Back</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
     </form>
 </div>
-{% endblock content %}
+{% endblock %}

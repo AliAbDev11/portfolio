@@ -36,7 +36,8 @@
                     {{ form.description(class="form-control") }}
                 </div>
             </fieldset>
-            <div class="form-group">
+            <div class="form-group d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary mr-3" onclick="history.back()">Back</button>
                 {{ form.submit(class="btn btn-primary") }}
             </div>
         </form>
