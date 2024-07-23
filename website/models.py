@@ -81,7 +81,7 @@ class Education(db.Model):
         return f"Education('{self.degree}', '{self.school}', '{self.start_date}', '{self.end_date}', '{self.is_current}')"
 class Service(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    picture = db.Column(db.String(20), nullable=False, default='default.png')
+    picture = db.Column(db.String(20))
     title = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
