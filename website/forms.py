@@ -105,10 +105,10 @@ class UpdateProfileForm(FlaskForm):
             raise ValidationError('That email is already taken. Please choose a different one.')
     
     def validate_phone_number(self, phone_number):
-        if phone_number.data != current_user.profile.phone_number:
-            user = User.query.filter_by(phone_number=phone_number.data).first()
+        if current_user.profile and phone_number.data != current_user.profile.phone_number:
+            user = Profile.query.filter_by(phone_number=phone_number.data).first()
             if user:
-                raise ValidationError('That phone number is already taken. Please choose a different one.')
+                raise ValidationError("That phone number is already taken. Please choose a different one.")
 
 class ExperienceForm(FlaskForm):
     job_title = StringField('Job Title', validators=[DataRequired()])

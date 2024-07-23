@@ -5,13 +5,13 @@
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Update Service</legend>
-            <div class="form-group">
-              {{ form.picture.label(class="form-control-label") }}
-              {% if service.image_file %}
-                <div>
-                  <img src="{{ url_for('static', filename='service_pics/' ~ service.image_file) }}" alt="Current Image" style="max-width: 200px;">
-                </div>
+            <div class="form-group d-grid">
+              {% if service.picture %}
+                <img class="mb-3" src="{{ url_for('static', filename='images/' + service.picture) }}" alt="Sevice Image" width="200">
+              {% else %}
+                  <img class="mb-3" src="{{ url_for('static', filename='images/default_img.png') }}" alt="Default Image" width="200">
               {% endif %}
+              {{ form.picture.label(class="form-control-label") }}
               {{ form.picture(class="form-control-file") }}
             </div>
             <div class="form-group">

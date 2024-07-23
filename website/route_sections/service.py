@@ -4,9 +4,22 @@ from flask_login import login_required, current_user
 from website.models import Service, db
 from website.forms import ServiceForm
 from website import app
-from website.routes import save_picture
+from PIL import Image
+import secrets
+import os
 
 service_bp = Blueprint('service', __name__)
+
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_name = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, "static/images", picture_name)
+    output_size = (150, 150)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+    return picture_name
 
 @app.route('/dashboard/list_services', methods=['GET'])
 @login_required
@@ -33,7 +46,7 @@ def add_service():
             service = Service(
                 title=form.title.data,
                 description=form.description.data,
-                image=picture_file,
+                picture=picture_file,
                 user_id=current_user.id
             )
         else:
@@ -54,11 +67,11 @@ def update_service(service_id):
     service = Service.query.get_or_404(service_id)
     form = ServiceForm()
     if form.validate_on_submit():
-        if form.picture.data:
-            picture_file = save_picture(form.picture.data)
-            service.image = picture_file
         service.title = form.title.data
         service.description = form.description.data
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            service.picture = picture_file
         db.session.commit()
         flash('Your service has been updated!', 'success')
         return redirect(url_for('service'))  # Redirect to the service list page

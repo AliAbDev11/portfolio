@@ -86,8 +86,19 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        # Create a Profile entry for the new user
-        profile = Profile(user_id=user.id)
+        # Create a Profile entry for the new user with default values
+        profile = Profile(
+            user_id=user.id,
+            image_file='default.png',  # Default image file
+            phone_number='',  # Default empty string for phone number
+            address='',  # Default empty string for address
+            bio_title='',  # Default empty string for bio title
+            bio='',  # Default empty string for bio
+            github='',  # Default empty string for GitHub
+            linkedin='',  # Default empty string for LinkedIn
+            twitter='',  # Default empty string for Twitter
+            instagram=''  # Default empty string for Instagram
+        )
         db.session.add(profile)
         db.session.commit()
 
@@ -123,17 +134,19 @@ def logout():
 @login_required
 def profile():
     profile_form = UpdateProfileForm()
-
     if profile_form.validate_on_submit():
-        # Handle profile picture upload
         if profile_form.picture.data:
             picture_file = save_picture(profile_form.picture.data)
             current_user.profile.image_file = picture_file
-
-        # Update user and profile data
+        
         current_user.fullname = profile_form.fullname.data
         current_user.username = profile_form.username.data
         current_user.email = profile_form.email.data
+
+        # Ensure current_user.profile exists
+        if not current_user.profile:
+            current_user.profile = Profile(user_id=current_user.id)
+        
         current_user.profile.phone_number = profile_form.phone_number.data
         current_user.profile.address = profile_form.address.data
         current_user.profile.bio_title = profile_form.bio_title.data
@@ -142,7 +155,7 @@ def profile():
         current_user.profile.linkedin = profile_form.linkedin.data
         current_user.profile.twitter = profile_form.twitter.data
         current_user.profile.instagram = profile_form.instagram.data
-
+        
         try:
             db.session.commit()
             flash('Profile updated successfully', 'success')
@@ -152,12 +165,10 @@ def profile():
             flash(f'An error occurred while updating your profile: {str(e)}', 'danger')
 
     elif request.method == 'GET':
-        # Populate form fields with current user data
-        profile_form.fullname.data = current_user.fullname
-        profile_form.username.data = current_user.username
-        profile_form.email.data = current_user.email
-
         if current_user.profile:
+            profile_form.fullname.data = current_user.fullname
+            profile_form.username.data = current_user.username
+            profile_form.email.data = current_user.email
             profile_form.phone_number.data = current_user.profile.phone_number
             profile_form.address.data = current_user.profile.address
             profile_form.bio_title.data = current_user.profile.bio_title
@@ -166,20 +177,11 @@ def profile():
             profile_form.linkedin.data = current_user.profile.linkedin
             profile_form.twitter.data = current_user.profile.twitter
             profile_form.instagram.data = current_user.profile.instagram
-        else:
-            profile_form.phone_number.data = ""
-            profile_form.address.data = ""
-            profile_form.bio_title.data = ""
-            profile_form.bio.data = ""
-            profile_form.github.data = ""
-            profile_form.linkedin.data = ""
-            profile_form.twitter.data = ""
-            profile_form.instagram.data = ""
+            profile_form.picture.data = current_user.profile.image_file
 
-    # Determine the image file path for rendering
     image_file = url_for("static", filename=f"images/user_pics/{current_user.profile.image_file}") if current_user.profile and current_user.profile.image_file else url_for("static", filename="images/user_pics/default.png")
-
     return render_template('admin/profile.html', title='Profile', image_file=image_file, profile_form=profile_form, active_tab="profile")
+
 
 @app.route("/reset_password", methods=["GET", "POST"])
 def reset_request():
@@ -246,3 +248,18 @@ def contact():
         return redirect(url_for('contact'))
 
     return render_template('home.html')
+
+@app.route("/delete_account", methods=["POST"])
+@login_required
+def delete_account():
+    user_id = current_user.id
+    user = User.query.get(user_id)
+    profile = Profile.query.filter_by(user_id=user_id).first()
+
+    if profile:
+        db.session.delete(profile)
+
+    db.session.delete(user)
+    db.session.commit()
+    flash("Your account has been deleted.", "success")
+    return redirect(url_for("home"))
