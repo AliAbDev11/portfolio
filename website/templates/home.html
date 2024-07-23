@@ -195,11 +195,13 @@
                     </div>
                     <div class="row">
                         {% for service in services %}
-                        <div class="col-md-4 text-center">
+                        <div class="col-md-3 d-flex justify-content-center text-center">
                             <div class="feature-left">
-                                <span class="icon">
-                                    {{ service.picture }}
-                                </span>
+                                {% if service.picture %}
+                                    <img src="{{ url_for('static', filename='images/' + service.picture) }}" alt="Service Image" width="100">
+                                {% else %}
+                                    <img src="{{ url_for('static', filename='images/default_img.png') }}" alt="Default Image" width="100">
+                                {% endif %}
                                 <div class="feature-copy">
                                     <h3>{{ service.title }}</h3>
                                     <p>{{ service.description }}</p>
@@ -259,20 +261,22 @@
         <div id="fh5co-consult">
             <div class="video fh5co-video">
                 <div class="col-md-4">
+                    {% for profile in profiles %}
                     <div class="contact-info-v1">
                         <div class="gsap-reveal d-block">
                         <span class="d-block contact-info-label">Email</span>
-                        <a href="#" class="contact-info-val">aliaitbrahim@gmail.com</a>
+                        <a href="#" class="contact-info-val">{{profile.user.email}}</a>
                         </div>
                         <div class="gsap-reveal d-block">
                         <span class="d-block contact-info-label">Phone</span>
-                        <a href="#" class="contact-info-val">+212 696813151</a>
+                        <a href="#" class="contact-info-val">{{profile.phone_number}}</a>
                         </div>
                         <div class="gsap-reveal d-block">
                         <span class="d-block contact-info-label">Address</span>
-                        <address class="contact-info-val">RES FERDAOUS OULFA, CASABLANCA, MOROCCO</address>
+                        <address class="contact-info-val">{{profile.address}}</address>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
             </div>
             <div class="choose animate-box">
