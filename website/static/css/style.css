@@ -1554,6 +1554,12 @@ footer.unslate_co--footer.unslate_co--section {
 }
 
 /* profile */
+.card-lg{
+  background: black;
+  border: 2px solid white;
+  box-shadow: 0 5px 15px #5cb85c !important;
+  width: 500px;
+}
 .card {
   transition: 0.7s ease;
   box-shadow: 0 5px 15px rgba(1 1 1/ 15);
